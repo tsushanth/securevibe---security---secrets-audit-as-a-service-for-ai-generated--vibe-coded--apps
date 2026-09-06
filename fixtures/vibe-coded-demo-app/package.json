@@ -1,0 +1,10 @@
+{
+  "name": "vibe-coded-demo-app",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Seeded sample app for SecureVibe's scan -> fix demo. Contains one instance of each of the 5 vulnerability patterns.",
+  "dependencies": {
+    "next": "^14.0.0",
+    "@supabase/supabase-js": "^2.0.0"
+  }
+}
