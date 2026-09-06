@@ -79,9 +79,19 @@ def cmd_fix(args):
     start, end, replacement, source = llm_fix.generate_fix(target_dir, match)
     print(f"  fix source: {source}")
 
-    branch_name, base_branch, file_relpath = apply_patch.apply_fix(
-        target_dir, match, start, end, replacement
-    )
+    try:
+        branch_name, base_branch, file_relpath = apply_patch.apply_fix(
+            target_dir, match, start, end, replacement
+        )
+    except RuntimeError as exc:
+        print(f"\nCould not apply the fix: {exc}", file=sys.stderr)
+        print(
+            "This can happen if an earlier `fix` already changed this file "
+            "and shifted its line numbers. Re-run `scan` to refresh the "
+            "report, then retry.",
+            file=sys.stderr,
+        )
+        sys.exit(1)
     print(f"\nCreated branch '{branch_name}' off '{base_branch}'.")
     print(f"Applied fix to {file_relpath} and committed.")
     print(f"\nRun: git diff {base_branch}..{branch_name} -- {file_relpath}")
